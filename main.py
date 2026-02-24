@@ -60,4 +60,28 @@ snake.draw()
 
 # >>> Display instructions on how to play the game
 displayInstructions()
+
+screen = turtle.Screen()
+screen.listen()
+
+def go_up():
+   if snake.direction != "Down":
+      snake.direction = "Up"
+
+def go_down():
+   if snake.direction != "Up":
+      snake.direction = "Down"
+def go_right():
+   if snake.direction != "Left":
+      snake.direction = "Right"
+
+def go_left():
+   if snake.direction != "Right":
+      snake.direction = "Left"
+
+screen.onkey(go_up, "Up")
+screen.onkey(go_down, "Down")
+screen.onkey(go_right, "Right")
+screen.onkey(go_left, "Left")
+
 turtle.done()
