@@ -11,4 +11,7 @@ class Apple:
         t.shape("circle")
         t.shapesize(0.5, 0.5)
         t.color(self.color)
+        t.penup()
+        t.hideturtle()
+        t.goto(self.x * 20 - 190, self.y * 20 - 190)
         t.stamp()

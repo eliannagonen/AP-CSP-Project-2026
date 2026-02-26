@@ -88,7 +88,7 @@ game_running = True
 def game_loop():
     snake.move()
     screen.update()
-    screen.ontimer(game_loop, 100)
+    screen.ontimer(game_loop, 200)
 
 game_loop()
 
