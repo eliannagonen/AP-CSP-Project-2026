@@ -61,7 +61,6 @@ snake.draw()
 # >>> Display instructions on how to play the game
 displayInstructions()
 
-screen = turtle.Screen()
 screen.listen()
 
 def go_up():
