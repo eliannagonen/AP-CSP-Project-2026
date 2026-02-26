@@ -54,7 +54,7 @@ apple = Apple("#FF0000",random.randint(0,19),random.randint(0,19))
 apple.draw()
 
 # >>> Add the Snake...
-snake = Snake("#810081","#B130B1",0,19)  #Purple Snake in the bottom left corner (0,0) of the 20x20 grid
+snake = Snake("#810081","#B130B1",10,10)  #Purple Snake in the bottom left corner (0,0) of the 20x20 grid
 snake.direction = "right"
 
 # >>> Display instructions on how to play the game

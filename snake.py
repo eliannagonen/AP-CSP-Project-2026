@@ -8,6 +8,7 @@ class Snake:
         head = turtle.Turtle()
         head.shape("square")
         head.color(head_color)
+        head.shapesize(0.5)
         head.penup()
         head.goto(x * 20 - 190, y * 20 - 190)
 
