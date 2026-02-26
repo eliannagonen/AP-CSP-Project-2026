@@ -1,6 +1,7 @@
 import turtle
 import random
 import time
+
 from snake import Snake
 from apple import Apple
 
@@ -55,8 +56,6 @@ apple.draw()
 # >>> Add the Snake...
 snake = Snake("#810081","#B130B1",0,19)  #Purple Snake in the bottom left corner (0,0) of the 20x20 grid
 snake.direction = "right"
-snake.draw()
-
 
 # >>> Display instructions on how to play the game
 displayInstructions()
@@ -64,23 +63,33 @@ displayInstructions()
 screen.listen()
 
 def go_up():
-   if snake.direction != "Down":
-      snake.direction = "Up"
+    if snake.direction != "down":
+        snake.direction = "up"
 
 def go_down():
-   if snake.direction != "Up":
-      snake.direction = "Down"
+    if snake.direction != "up":
+        snake.direction = "down"
+
 def go_right():
-   if snake.direction != "Left":
-      snake.direction = "Right"
+    if snake.direction != "left":
+        snake.direction = "right"
 
 def go_left():
-   if snake.direction != "Right":
-      snake.direction = "Left"
+    if snake.direction != "right":
+        snake.direction = "left"
 
 screen.onkey(go_up, "Up")
 screen.onkey(go_down, "Down")
 screen.onkey(go_right, "Right")
 screen.onkey(go_left, "Left")
+
+game_running = True
+
+def game_loop():
+    snake.move()
+    screen.update()
+    screen.ontimer(game_loop, 100)
+
+game_loop()
 
 turtle.done()

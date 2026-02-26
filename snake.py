@@ -19,18 +19,16 @@ class Snake:
             new_y = self.segments[i-1].ycor()
             self.segments[i].goto(new_x, new_y)
 
-            head = self.segments[0]
-            x = head.xcor()
-            y = head.ycor()
+        head = self.segments[0]
+        x = head.xcor()
+        y = head.ycor()
 
-            if self.direction == "right":
-                head.goto(x + 20, y)
-
-            if self.direction == "left":
+        if self.direction == "right":
+            head.goto(x + 20, y)
+        elif self.direction == "left":
                 head.goto(x - 20, y)
-
-            if self.direction == "up":
+        elif self.direction == "up":
                 head.goto(x, y + 20)
-
-            if self.direction == "down":
+        elif self.direction == "down":
                 head.goto(x, y - 20)
+

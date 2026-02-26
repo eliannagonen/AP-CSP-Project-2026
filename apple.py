@@ -1,6 +1,4 @@
 import turtle
-import random
-import time
 
 class Apple:
     def __init__(self, color, x, y):
