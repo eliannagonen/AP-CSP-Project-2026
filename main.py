@@ -87,6 +87,12 @@ game_running = True
 
 def game_loop():
     snake.move()
+
+    head = snake.segments[0]
+
+    if head.distance(apple.x * 20 - 190, apple.y * 20 - 190) < 10:
+        print("Apple eaten!")
+
     screen.update()
     screen.ontimer(game_loop, 200)
 
