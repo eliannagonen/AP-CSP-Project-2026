@@ -1,17 +1,23 @@
 import turtle
 
+GRID_SIZE = 16
+
 class Apple:
     def __init__(self, color, x, y):
         self.color = color
         self.x = x
         self.y = y
+
+        self.t = turtle.Turtle()
+        self.t.shape("circle")
+        self.t.shapesize(0.4, 0.4)
+        self.t.color(self.color)
+        self.t.penup()
+        self.t.hideturtle()
+
+        self.draw()
     
     def draw(self):
-        t = turtle.Turtle()
-        t.shape("circle")
-        t.shapesize(0.5, 0.5)
-        t.color(self.color)
-        t.penup()
-        t.hideturtle()
-        t.goto(self.x * 20 - 190, self.y * 20 - 190)
-        t.stamp()
+        self.t.clear()
+        self.t.goto(self.x * GRID_SIZE - 190, self.y * GRID_SIZE - 190)
+        self.t.stamp()

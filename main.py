@@ -5,6 +5,9 @@ import time
 from snake import Snake
 from apple import Apple
 
+GRID_SIZE = 16
+GRID_COUNT = 20
+
 def displayInstructions():
    print("")
    print("~~~~~~~~~~~~~~~~~~~~")
@@ -45,9 +48,38 @@ screen.setup(400, 400)
 screen.colormode(255)
 screen.bgcolor((200,200,200))
 
-# >>> Draw the white borders
-drawBorders()
 
+def drawGrid():
+    pen = turtle.Turtle()
+    pen.hideturtle()
+    pen.speed(0)
+    pen.color("#AAAAAA")
+    pen.penup()
+
+    GRID_SIZE = 16
+    GRID_COUNT = 20
+    GRID_PIXEL = GRID_SIZE * GRID_COUNT
+    START = -GRID_PIXEL / 2
+
+    # vertical lines
+    for i in range(GRID_COUNT + 1):
+        x = START + i * GRID_SIZE
+        pen.goto(x, START)
+        pen.pendown()
+        pen.goto(x, START + GRID_COUNT * GRID_SIZE)
+        pen.penup()
+
+    # horizontal lines
+    for i in range(GRID_COUNT + 1):
+        y = START + i * GRID_SIZE
+        pen.goto(START, y)
+        pen.pendown()
+        pen.goto(START + GRID_COUNT * GRID_SIZE, y)
+        pen.penup()
+
+# >>> Draw the white borders and grid lines
+drawBorders()
+drawGrid()
 
 # >>> Add the apple
 apple = Apple("#FF0000",random.randint(0,19),random.randint(0,19))
@@ -92,9 +124,26 @@ def game_loop():
 
     if head.distance(apple.x * 20 - 190, apple.y * 20 - 190) < 10:
         print("Apple eaten!")
+        apple.x = random.randint(0,GRID_COUNT)
+        apple.y = random.randint(0,GRID_COUNT)
+
+        apple.draw()
+        snake.grow()
 
     screen.update()
     screen.ontimer(game_loop, 200)
+
+    x = head.xcor()
+    y = head.ycor()
+
+    if x > 190 or x < -190 or y > 190 or y < -190:
+        print("Game Over!")
+        return
+    
+    for segment in snake.segments[1:]:
+        if head.distance(segment) < 5:
+            print("Game Over!")
+            return
 
 game_loop()
 
