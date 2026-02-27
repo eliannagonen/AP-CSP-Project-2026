@@ -31,6 +31,12 @@ def displayInstructions():
         font=("Arial", 12, "bold")
     )
 
+def start_game(x, y):
+    screen.onclick(None)
+    writer.clear()
+    update_score()
+    game_loop()
+
 def drawBorders():
    pen = turtle.Turtle()
    pen.hideturtle()  
@@ -47,7 +53,7 @@ def drawBorders():
 # >>> Setup the Stage
 screen = turtle.Screen()
 screen.tracer(0,0)
-screen.setup(410, 415)
+screen.setup(410, 445)
 screen.colormode(255)
 screen.bgcolor((200,200,200))
 
@@ -89,6 +95,7 @@ snake.direction = "right"
 
 # >>> Display instructions on how to play the game
 displayInstructions()
+screen.onclick(start_game)
 
 screen.listen()
 
@@ -116,6 +123,7 @@ screen.onkey(go_left, "Left")
 game_running = True
 
 def game_loop():
+    global score
     snake.move()
 
     head = snake.segments[0]
@@ -123,27 +131,39 @@ def game_loop():
 
     if head.distance(apple.x * GRID_SIZE + START + GRID_SIZE / 2, apple.y * GRID_SIZE + START + GRID_SIZE / 2) < 10:
         print("Apple eaten!")
+        score += 1
         apple.x = random.randint(0,GRID_COUNT - 1)
         apple.y = random.randint(0,GRID_COUNT - 1)
-
         apple.draw()
         snake.grow()
-
-    screen.update()
-    screen.ontimer(game_loop, 200)
+        update_score()
 
     x = head.xcor()
     y = head.ycor()
 
     if x < START + GRID_SIZE / 2 or x > END or y < START + GRID_SIZE / 2 or y > END:
         print("Game Over!")
-        return  
-    
-    for segment in snake.segments[1:]:
+        writer.clear()
+        writer.goto(0, 0)
+        writer.write("Game Over!", align="center", font=("Arial", 20, "bold")) 
+        return
+
+    for segment in snake.segments[1:-1]:
         if head.distance(segment) < 5:
             print("Game Over!")
+            writer.clear()
+            writer.goto(0, 0)
+            writer.write("Game Over!", align="center", font=("Arial", 20, "bold"))
             return
+        
+    screen.update()
+    screen.ontimer(game_loop, 200)
 
-game_loop()
+score = 0
+
+def update_score():
+    writer.clear()
+    writer.goto(0, 203)
+    writer.write(f"Score: {score}", align="center", font=("Arial", 14, "bold"))
 
 turtle.done()
