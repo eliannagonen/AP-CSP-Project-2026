@@ -1,7 +1,5 @@
 import turtle
 import random
-import time
-
 from snake import Snake
 from apple import Apple
 
@@ -137,6 +135,12 @@ def game_loop():
         apple.draw()
         snake.grow()
         update_score()
+
+    if len(snake.segments) == GRID_COUNT * GRID_COUNT:
+        writer.clear()
+        writer.goto(0, 0)
+        writer.write("You Win!", align="center", font=("Arial", 50, "bold"))
+        return
 
     x = head.xcor()
     y = head.ycor()
