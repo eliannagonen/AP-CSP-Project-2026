@@ -139,7 +139,8 @@ def game_loop():
     if len(snake.segments) == GRID_COUNT * GRID_COUNT:
         writer.clear()
         writer.goto(0, 0)
-        writer.write("You Win!", align="center", font=("Arial", 50, "bold"))
+        writer.write("You Win!\n\nClick to restart!", align="center", font=("Arial", 50, "bold"))
+        screen.onclick(restart_game)
         return
 
     x = head.xcor()
@@ -149,7 +150,8 @@ def game_loop():
         print("Game Over!")
         writer.clear()
         writer.goto(0, 0)
-        writer.write("Game Over!", align="center", font=("Arial", 20, "bold")) 
+        writer.write("Game Over!\n\nClick to restart!", align="center", font=("Arial", 20, "bold")) 
+        screen.onclick(restart_game)
         return
 
     for segment in snake.segments[1:-1]:
@@ -157,7 +159,8 @@ def game_loop():
             print("Game Over!")
             writer.clear()
             writer.goto(0, 0)
-            writer.write("Game Over!", align="center", font=("Arial", 20, "bold"))
+            writer.write("Game Over!\n\nClick to restart!", align="center", font=("Arial", 20, "bold"))
+            screen.onclick(restart_game)
             return
         
     screen.update()
@@ -170,4 +173,20 @@ def update_score():
     writer.goto(0, 203)
     writer.write(f"Score: {score}", align="center", font=("Arial", 14, "bold"))
 
+def restart_game(x,y):
+    global score, snake
+    screen.onclick(None)
+
+    for segment in snake.segments:
+        segment.hideturtle()
+
+    score = 0
+    snake = Snake("","",10,10)
+    snake.direction = "right"
+    apple.x = random.randint(0, GRID_COUNT - 1)
+    apple.y = random.randint(0, GRID_COUNT - 1)
+    apple.draw()
+    writer.clear()
+    update_score()
+    game_loop()
 turtle.done()
