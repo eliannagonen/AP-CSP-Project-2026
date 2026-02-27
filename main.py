@@ -5,28 +5,31 @@ import time
 from snake import Snake
 from apple import Apple
 
-GRID_SIZE = 16
+GRID_SIZE = 20
 GRID_COUNT = 20
+START = -(GRID_SIZE * GRID_COUNT) / 2
+END = START + (GRID_SIZE * GRID_COUNT) - GRID_SIZE / 2
+
+writer = turtle.Turtle()
+writer.hideturtle()
+writer.penup()
+writer.color("#000000")
 
 def displayInstructions():
-   print("")
-   print("~~~~~~~~~~~~~~~~~~~~")
-   print("                    ")
-   print("    Snake Game      ")
-   print("                    ")
-   print("~~~~~~~~~~~~~~~~~~~~")
-   print("")
-
-   print("Instructions")
-   print(" > Use the arrow keys on your keyboard to control the snake.")
-   print(" > Do not let your snake reach the edges of the screen.")
-   print(" > Direct your snake to reach the red apple.")
-   print(" > Do not let your snake eat/cross its own tail.")
-   print("")
-
-   print(" >>> Double click on the screen to get started...")
-   print("")
-
+   writer.goto(0, 0)
+   writer.write(
+        "~~~~~~~~~~~~~~~\n\n" \
+        "         SNAKE     \n\n" \
+        "~~~~~~~~~~~~~~~\n\n" \
+        "Instructions:\n" \
+        "> Use the arrow keys on your keyboard to control the snake.\n" \
+        "> Do not let your snake reach the edges of the screen.\n" \
+        "> Direct your snake to reach the red apple.\n" \
+        "> Do not let your snake eat/cross its own tail.\n\n" \
+        "Click the screen to get started!",
+        align="center",
+        font=("Arial", 12, "bold")
+    )
 
 def drawBorders():
    pen = turtle.Turtle()
@@ -35,16 +38,16 @@ def drawBorders():
    pen.color("#FFFFFF")
    pen.pensize(2)
    pen.penup()
-   pen.goto(-199,-199)
+   pen.goto(START, START)
    pen.pendown()
    for i in range(4):
-      pen.forward(398)
+      pen.forward(GRID_SIZE * GRID_COUNT)
       pen.left(90)
 
 # >>> Setup the Stage
 screen = turtle.Screen()
 screen.tracer(0,0)
-screen.setup(400, 400)
+screen.setup(410, 415)
 screen.colormode(255)
 screen.bgcolor((200,200,200))
 
@@ -55,11 +58,6 @@ def drawGrid():
     pen.speed(0)
     pen.color("#AAAAAA")
     pen.penup()
-
-    GRID_SIZE = 16
-    GRID_COUNT = 20
-    GRID_PIXEL = GRID_SIZE * GRID_COUNT
-    START = -GRID_PIXEL / 2
 
     # vertical lines
     for i in range(GRID_COUNT + 1):
@@ -82,7 +80,7 @@ drawBorders()
 drawGrid()
 
 # >>> Add the apple
-apple = Apple("#FF0000",random.randint(0,19),random.randint(0,19))
+apple = Apple("#FF0000",random.randint(0,GRID_COUNT - 1),random.randint(0,GRID_COUNT - 1))
 apple.draw()
 
 # >>> Add the Snake...
@@ -96,19 +94,19 @@ screen.listen()
 
 def go_up():
     if snake.direction != "down":
-        snake.direction = "up"
+        snake.next_direction = "up"
 
 def go_down():
     if snake.direction != "up":
-        snake.direction = "down"
+        snake.next_direction = "down"
 
 def go_right():
     if snake.direction != "left":
-        snake.direction = "right"
+        snake.next_direction = "right"
 
 def go_left():
     if snake.direction != "right":
-        snake.direction = "left"
+        snake.next_direction = "left"
 
 screen.onkey(go_up, "Up")
 screen.onkey(go_down, "Down")
@@ -121,11 +119,12 @@ def game_loop():
     snake.move()
 
     head = snake.segments[0]
+    START = - (GRID_SIZE * GRID_COUNT) / 2
 
-    if head.distance(apple.x * 20 - 190, apple.y * 20 - 190) < 10:
+    if head.distance(apple.x * GRID_SIZE + START + GRID_SIZE / 2, apple.y * GRID_SIZE + START + GRID_SIZE / 2) < 10:
         print("Apple eaten!")
-        apple.x = random.randint(0,GRID_COUNT)
-        apple.y = random.randint(0,GRID_COUNT)
+        apple.x = random.randint(0,GRID_COUNT - 1)
+        apple.y = random.randint(0,GRID_COUNT - 1)
 
         apple.draw()
         snake.grow()
@@ -136,9 +135,9 @@ def game_loop():
     x = head.xcor()
     y = head.ycor()
 
-    if x > 190 or x < -190 or y > 190 or y < -190:
+    if x < START + GRID_SIZE / 2 or x > END or y < START + GRID_SIZE / 2 or y > END:
         print("Game Over!")
-        return
+        return  
     
     for segment in snake.segments[1:]:
         if head.distance(segment) < 5:
