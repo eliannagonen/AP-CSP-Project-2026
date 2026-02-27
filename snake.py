@@ -1,18 +1,33 @@
 import turtle
+import random
 
 GRID_SIZE = 20
 GRID_COUNT = 20
 START = -(GRID_SIZE * GRID_COUNT) / 2
 
+turtle.colormode(255)
+
 class Snake:
     def __init__(self, head_color, body_color, x, y):
+        def random_color():
+            r = random.randint(50, 200)
+            g = random.randint(50, 200)
+            b = random.randint(50, 200)
+            return (r, g, b)
+        
+        def lighter_color(color):
+             r, g, b = color
+             return (min(r + 40, 255), min(g + 40, 255), min(b + 40, 255))
+
         self.segments = []
         self.direction = "right"
         self.next_direction = "right"
+        self.head_color = random_color()
+        self.body_color = lighter_color(self.head_color)
 
         head = turtle.Turtle()
         head.shape("square")
-        head.color(head_color)
+        head.color(self.head_color)
         head.shapesize(GRID_SIZE / 20)
         head.penup()
         head.goto(x * GRID_SIZE + START + GRID_SIZE / 2, y * GRID_SIZE + START + GRID_SIZE / 2)
@@ -43,7 +58,7 @@ class Snake:
     def grow(self):
         segment = turtle.Turtle()
         segment.shape("square")
-        segment.color("#B130B1")
+        segment.color(self.body_color)
         segment.shapesize(GRID_SIZE / 20)
         segment.penup()
 

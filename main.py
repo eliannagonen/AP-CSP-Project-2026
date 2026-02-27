@@ -48,7 +48,7 @@ def drawBorders():
       pen.forward(GRID_SIZE * GRID_COUNT)
       pen.left(90)
 
-# >>> Setup the Stage
+# Setup the Stage
 screen = turtle.Screen()
 screen.tracer(0,0)
 screen.setup(410, 445)
@@ -79,19 +79,19 @@ def drawGrid():
         pen.goto(START + GRID_COUNT * GRID_SIZE, y)
         pen.penup()
 
-# >>> Draw the white borders and grid lines
+# Draw the white borders and grid lines
 drawBorders()
 drawGrid()
 
-# >>> Add the apple
+# Add the apple
 apple = Apple("#FF0000",random.randint(0,GRID_COUNT - 1),random.randint(0,GRID_COUNT - 1))
 apple.draw()
 
-# >>> Add the Snake...
-snake = Snake("#810081","#B130B1",10,10)  #Purple Snake in the bottom left corner (0,0) of the 20x20 grid
+# Add the Snake
+snake = Snake("","",10,10) 
 snake.direction = "right"
 
-# >>> Display instructions on how to play the game
+# Display instructions on how to play the game
 displayInstructions()
 screen.onclick(start_game)
 
