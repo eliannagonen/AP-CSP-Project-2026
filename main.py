@@ -97,6 +97,7 @@ screen.onclick(start_game)
 
 screen.listen()
 
+# Instructions for switching directions/keyboard inputs
 def go_up():
     if snake.direction != "down":
         snake.next_direction = "up"
@@ -120,6 +121,7 @@ screen.onkey(go_left, "Left")
 
 game_running = True
 
+# Game procedure for eating apples/scoring
 def game_loop():
     global score
     snake.move()
@@ -136,6 +138,7 @@ def game_loop():
         snake.grow()
         update_score()
 
+    # Winning procedure
     if len(snake.segments) == GRID_COUNT * GRID_COUNT:
         writer.clear()
         writer.goto(0, 0)
@@ -146,6 +149,7 @@ def game_loop():
     x = head.xcor()
     y = head.ycor()
 
+    # Losing procedures
     if x < START + GRID_SIZE / 2 or x > END or y < START + GRID_SIZE / 2 or y > END:
         print("Game Over!")
         writer.clear()
@@ -166,6 +170,7 @@ def game_loop():
     screen.update()
     screen.ontimer(game_loop, 200)
 
+# Score tracking
 score = 0
 
 def update_score():
@@ -189,4 +194,5 @@ def restart_game(x,y):
     writer.clear()
     update_score()
     game_loop()
+
 turtle.done()
