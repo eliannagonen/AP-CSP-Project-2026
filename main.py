@@ -129,11 +129,23 @@ def game_loop():
     head = snake.segments[0]
     START = - (GRID_SIZE * GRID_COUNT) / 2
 
+    def place_apple():
+        while True:
+            new_x = random.randint(0, GRID_COUNT - 1)
+            new_y = random.randint(0, GRID_COUNT - 1)
+
+            overlap = False
+            for segment in snake.segments:
+                if segment.x == new_x and segment.y == new_y:
+                    overlap = True
+                    break
+                if not overlap:
+                    return new_x, new_y
+
     if head.distance(apple.x * GRID_SIZE + START + GRID_SIZE / 2, apple.y * GRID_SIZE + START + GRID_SIZE / 2) < 10:
         print("Apple eaten!")
         score += 1
-        apple.x = random.randint(0,GRID_COUNT - 1)
-        apple.y = random.randint(0,GRID_COUNT - 1)
+        apple.x, apple.y = place_apple()
         apple.draw()
         snake.grow()
         update_score()
