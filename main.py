@@ -136,7 +136,7 @@ def game_loop():
 
             overlap = False
             for segment in snake.segments:
-                if segment.x == new_x and segment.y == new_y:
+                if segment.xcor() == new_x and segment.ycor() == new_y:
                     overlap = True
                     break
                 if not overlap:
