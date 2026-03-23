@@ -1,22 +1,25 @@
 import turtle
 
-GRID_SIZE = 20
-GRID_COUNT = 20
-START = -(GRID_SIZE * GRID_COUNT) / 2
-
 class Apple:
-    # Store the apple's color and grid coordinates.
-    def __init__(self, color, x, y):
+    def __init__(self, color, x, y, get_dimensions):
         self.color = color
         self.x = x
         self.y = y
+        self.get_dimensions = get_dimensions  # callable from main
 
         self.t = turtle.Turtle()
         self.t.shape("circle")
-        self.t.shapesize(GRID_SIZE / 20 * 0.9, GRID_SIZE / 20 * 0.9)
         self.t.color(self.color)
         self.t.penup()
-        self.draw()
-    
+        self.t.hideturtle()
+
     def draw(self):
-        self.t.goto(self.x * GRID_SIZE + START + GRID_SIZE / 2, self.y * GRID_SIZE + START + GRID_SIZE / 2)
+        start, _, grid_size, _ = self.get_dimensions()
+        self.t.shapesize(grid_size / 20 * 0.9, grid_size / 20 * 0.9)
+        self.t.goto(
+            self.x * grid_size + start + grid_size / 2,
+            self.y * grid_size + start + grid_size / 2
+        )
+        self.t.showturtle()
+    
+    
