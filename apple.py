@@ -11,7 +11,7 @@ class Apple:
         self.y = y
 
         self.t = turtle.Turtle()
-        self.t.shape("turtle")
+        self.t.shape("circle")
         self.t.shapesize(GRID_SIZE / 20 * 0.9, GRID_SIZE / 20 * 0.9)
         self.t.color(self.color)
         self.t.penup()

@@ -152,6 +152,9 @@ def game_loop():
 
     # Winning procedure
     if len(snake.segments) == GRID_COUNT * GRID_COUNT:
+        global high_score
+        if score > high_score:
+            high_score = score
         writer.clear()
         writer.goto(0, 0)
         writer.write("You Win!\n\nClick to restart!", align="center", font=("Arial", 50, "bold"))
@@ -164,18 +167,22 @@ def game_loop():
     # Losing procedures
     if x < START + GRID_SIZE / 2 or x > END or y < START + GRID_SIZE / 2 or y > END:
         print("Game Over!")
+        if score > high_score:
+            high_score = score
         writer.clear()
         writer.goto(0, 0)
-        writer.write("Game Over!\n\nClick to restart!", align="center", font=("Arial", 20, "bold")) 
+        writer.write(f"Game Over!\n\nHigh Score: {high_score}\n\nClick to restart!", align="center", font=("Arial", 20, "bold"))
         screen.onclick(restart_game)
         return
 
     for segment in snake.segments[1:-1]:
         if head.distance(segment) < 5:
             print("Game Over!")
+            if score > high_score:
+                high_score = score
             writer.clear()
             writer.goto(0, 0)
-            writer.write("Game Over!\n\nClick to restart!", align="center", font=("Arial", 20, "bold"))
+            writer.write(f"Game Over!\n\nHigh Score: {high_score}\n\n Click to restart!", align="center", font=("Arial", 20, "bold"))
             screen.onclick(restart_game)
             return
         
@@ -184,11 +191,12 @@ def game_loop():
 
 # Score tracking
 score = 0
+high_score = 0
 
 def update_score():
     writer.clear()
     writer.goto(0, 203)
-    writer.write(f"Score: {score}", align="center", font=("Arial", 14, "bold"))
+    writer.write(f"Score: {score}   High Score: {high_score}", align="center", font=("Arial", 14, "bold"))
 
 def restart_game(x,y):
     global score, snake
@@ -196,8 +204,9 @@ def restart_game(x,y):
 
     for segment in snake.segments:
         segment.hideturtle()
-
+    
     score = 0
+
     snake = Snake("","",10,10)
     snake.direction = "right"
     apple.x = random.randint(0, GRID_COUNT - 1)
