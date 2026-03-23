@@ -9,6 +9,7 @@ turtle.colormode(255)
 
 class Snake:
     def __init__(self, head_color, body_color, x, y):
+        # pick snake body and head colors
         def random_color():
             r = random.randint(50, 200)
             g = random.randint(50, 200)
@@ -34,6 +35,7 @@ class Snake:
 
         self.segments.append(head)
 
+    # Move snake one box, shift body segments and head forward
     def move(self):
         self.direction = self.next_direction
 
@@ -46,6 +48,7 @@ class Snake:
         x = head.xcor()
         y = head.ycor()
 
+        # Move the head one grid cell in the current direction.
         if self.direction == "right":
             head.goto(x + GRID_SIZE, y)
         elif self.direction == "left":
@@ -55,6 +58,7 @@ class Snake:
         elif self.direction == "down":
                 head.goto(x, y - GRID_SIZE)
 
+    # Append a new body segment at the tail of the snake.
     def grow(self):
         segment = turtle.Turtle()
         segment.shape("square")

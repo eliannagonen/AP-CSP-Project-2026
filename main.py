@@ -3,6 +3,9 @@ import random
 from snake import Snake
 from apple import Apple
 
+# Grid: each cell is GRID_SIZE pixels wide, and the grid spans GRID_COUNT cells.
+# START anchors the grid to the center.
+
 GRID_SIZE = 20
 GRID_COUNT = 20
 START = -(GRID_SIZE * GRID_COUNT) / 2
@@ -13,6 +16,7 @@ writer.hideturtle()
 writer.penup()
 writer.color("#000000")
 
+# Display the title and instructions at the center of the screen.
 def displayInstructions():
    writer.goto(0, 0)
    writer.write(
@@ -29,12 +33,14 @@ def displayInstructions():
         font=("Arial", 12, "bold")
     )
 
+# Remove the instructions screen and begin the game loop on click.
 def start_game(x, y):
     screen.onclick(None)
     writer.clear()
     update_score()
     game_loop()
 
+# Draw a white square border around the game board.
 def drawBorders():
    pen = turtle.Turtle()
    pen.hideturtle()  
@@ -55,7 +61,7 @@ screen.setup(410, 445)
 screen.colormode(255)
 screen.bgcolor((200,200,200))
 
-
+# Draw grid lines on game board.
 def drawGrid():
     pen = turtle.Turtle()
     pen.hideturtle()
@@ -129,6 +135,7 @@ def game_loop():
     head = snake.segments[0]
     START = - (GRID_SIZE * GRID_COUNT) / 2
 
+    # Find a random grid cell not currently occupied by the snake.
     def place_apple():
         while True:
             new_x = random.randint(0, GRID_COUNT - 1)
@@ -142,6 +149,7 @@ def game_loop():
                 if not overlap:
                     return new_x, new_y
 
+    # Procedure for when apple is eaten. 
     if head.distance(apple.x * GRID_SIZE + START + GRID_SIZE / 2, apple.y * GRID_SIZE + START + GRID_SIZE / 2) < 10:
         print("Apple eaten!")
         score += 1
@@ -165,6 +173,7 @@ def game_loop():
     y = head.ycor()
 
     # Losing procedures
+    # Snake goes outside the boundaries of the grid (hit a wall).
     if x < START + GRID_SIZE / 2 or x > END or y < START + GRID_SIZE / 2 or y > END:
         print("Game Over!")
         if score > high_score:
@@ -175,6 +184,7 @@ def game_loop():
         screen.onclick(restart_game)
         return
 
+    # Snake collides with itself. 
     for segment in snake.segments[1:-1]:
         if head.distance(segment) < 5:
             print("Game Over!")
@@ -198,6 +208,7 @@ def update_score():
     writer.goto(0, 203)
     writer.write(f"Score: {score}   High Score: {high_score}", align="center", font=("Arial", 14, "bold"))
 
+# Procedure for restarting game after win/loss.
 def restart_game(x,y):
     global score, snake
     screen.onclick(None)
