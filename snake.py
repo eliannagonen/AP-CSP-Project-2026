@@ -17,13 +17,15 @@ class Snake:
              return (min(r + 40, 255), min(g + 40, 255), min(b + 40, 255))
 
         self.get_dimensions = get_dimensions
-        self.segments = []
+        
         self.direction = "right"
         self.next_direction = "right"
         self.head_color = random_color()
         self.body_color = lighter_color(self.head_color)
 
         start, _, grid_size, _ = get_dimensions()
+
+        self.segments = []
 
         head = turtle.Turtle()
         head.shape("square")
@@ -36,6 +38,7 @@ class Snake:
         self.segments.append(head)
 
     # Move snake one box, shift body segments and head forward
+    
     def move(self):
         self.direction = self.next_direction
 
@@ -59,7 +62,7 @@ class Snake:
         elif self.direction == "down":
                 head.goto(x, y - grid_size)
 
-    # Append a new body segment at the tail of the snake.
+    # Append a new body segment at the tail of the snake
     def grow(self):
         _, _, grid_size, _ = self.get_dimensions()
 

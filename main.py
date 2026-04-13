@@ -3,10 +3,10 @@ import random
 from snake import Snake
 from apple import Apple
 
-# --- Grid Constants ---
+# Grid constants
 GRID_COUNT = 20  # number of cells
 
-# --- Screen Setup ---
+# Screen setup
 screen = turtle.Screen()
 screen.tracer(0, 0)
 screen.setup(width=0.8, height=0.8)
@@ -25,7 +25,7 @@ def get_dimensions():
     end = start + total - grid_size // 2
     return start, end, grid_size, total
 
-# --- Drawing ---
+# Drawing
 grid_turtles = []  # track grid/border turtles so we can clear just them
 
 def drawBorders(start, total):
@@ -78,13 +78,13 @@ def redrawGrid():
 redrawGrid()
 screen.update()
 
-# --- Writer turtle ---
+# Writer turtle
 writer = turtle.Turtle()
 writer.hideturtle()
 writer.penup()
 writer.color("#000000")
 
-# --- Score ---
+# Score
 score = 0
 high_score = 0
 
@@ -94,14 +94,14 @@ def update_score():
     writer.goto(0, total // 2 + 10)  # just above the grid
     writer.write(f"Score: {score}   High Score: {high_score}", align="center", font=("Arial", 14, "bold"))
 
-# --- Game objects ---
+# Game objects
 apple = Apple("#FF0000", random.randint(0, GRID_COUNT - 1), random.randint(0, GRID_COUNT - 1), get_dimensions)
 
 snake = Snake("", "", 10, 10, get_dimensions)
 snake.direction = "right"
 snake.segments[0].hideturtle()
 
-# --- Resize polling ---
+# Resize
 game_started = False
 _last_size = (0, 0)
 
@@ -117,7 +117,7 @@ def checkResize():
 
 checkResize()
 
-# --- Instructions ---
+# Instructions
 def displayInstructions():
     writer.goto(0, 0)
     writer.write(
@@ -164,7 +164,7 @@ def start_game(x, y):
 displayInstructions()
 screen.onclick(start_game)
 
-# --- Controls ---
+# Controls
 def go_up():
     if snake.direction != "down":
         snake.next_direction = "up"
@@ -187,13 +187,13 @@ screen.onkey(go_right, "Right")
 screen.onkey(go_left, "Left")
 screen.listen()
 
-# --- Game loop ---
-def place_apple():
+# Game loop
+def place_apple(segments):
     """Find a random grid cell not occupied by the snake."""
     while True:
         new_x = random.randint(0, GRID_COUNT - 1)
         new_y = random.randint(0, GRID_COUNT - 1)
-        if not any(s.xcor() == new_x and s.ycor() == new_y for s in snake.segments):
+        if not any(s.xcor() == new_x and s.ycor() == new_y for s in segments):
             return new_x, new_y
 
 def game_loop():
@@ -202,13 +202,14 @@ def game_loop():
 
     start, end, grid_size, _ = get_dimensions()
     head = snake.segments[0]
-
-    # Apple eaten
+    
     apple_px_x = apple.x * grid_size + start + grid_size / 2
     apple_px_y = apple.y * grid_size + start + grid_size / 2
+    
+    # Apple eaten
     if head.distance(apple_px_x, apple_px_y) < 10:
         score += 1
-        apple.x, apple.y = place_apple()
+        apple.x, apple.y = place_apple(snake.segments)
         apple.draw()
         snake.grow()
         update_score()
@@ -246,7 +247,7 @@ def game_loop():
     screen.update()
     screen.ontimer(game_loop, 200)
 
-# --- Restart ---
+# Restart
 def restart_game(x, y):
     global score, snake
     screen.onclick(None)
